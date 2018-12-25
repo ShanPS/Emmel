@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 np.random.seed(3)
-#%matplotlib inline
+# %matplotlib inline
 
 # load dataset
 vocab_size = 5000
@@ -17,7 +17,7 @@ batch_size = 64
 epochs = 13
 
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=vocab_size)
-# to get word to id mapping based on the frequency of occurrence 
+# to get word to id mapping based on the frequency of occurrence
 #    word2id = imdb.get_word_index()
 # to get id to word mapping
 #    id2word = {i: word for word, i in word2id.items()}
@@ -57,7 +57,7 @@ plt.plot(history.history['val_acc'])
 plt.title('Model Accuray')
 plt.xlabel('accuracy')
 plt.ylabel('epoch')
-plt.legend(['train','test'], loc='upper left')
+plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
 # plot loss for train and test data
@@ -66,7 +66,7 @@ plt.plot(history.history['val_loss'])
 plt.title('Model Loss')
 plt.xlabel('loss')
 plt.ylabel('epoch')
-plt.legend(['train','test'], loc='upper left')
+plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
 # save model and weights
