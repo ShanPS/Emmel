@@ -9,14 +9,16 @@ import numpy as np
 np.random.seed(3)
 # %matplotlib inline
 
-# load dataset
+# hyper-parameters
 vocab_size = 5000
 max_input_word_length = 300
 word_vec_features = 32
 batch_size = 64
 epochs = 13
 
+# load dataset
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=vocab_size)
+
 # to get word to id mapping based on the frequency of occurrence
 #    word2id = imdb.get_word_index()
 # to get id to word mapping
@@ -25,25 +27,32 @@ epochs = 13
 print("{} training examples".format(len(x_train)))
 print("{} testing examples".format(len(x_test)))
 
-# add padding to make each training example to have same length (if more words by truncating them or if less words by adding zeros)
-x_train = sequence.pad_sequences(x_train, maxlen=max_input_word_length, padding='pre', truncating='pre')
-x_test = sequence.pad_sequences(x_test, maxlen=max_input_word_length, padding='pre', truncating='pre')
+# add padding to make each training example to have same length
+# (if more words by truncating them or if less words by adding zeros)
+x_train = sequence.pad_sequences(x_train, maxlen=max_input_word_length,
+                                 padding='pre', truncating='pre')
+x_test = sequence.pad_sequences(x_test, maxlen=max_input_word_length,
+                                padding='pre', truncating='pre')
 print('x_train shape:', x_train.shape)
 print('x_test shape:', x_test.shape)
 
 # model
 model = Sequential()
-model.add(Embedding(vocab_size, word_vec_features, input_length=max_input_word_length))
+model.add(Embedding(vocab_size, word_vec_features,
+                    input_length=max_input_word_length))
 model.add(LSTM(100, dropout=0.3, recurrent_dropout=0.3))
 model.add(Dense(1, activation='sigmoid'))
 
 print(model.summary())
 
 # compile the model
-model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
 
 # train the model
-history = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train, batch_size=batch_size, verbose=2,
+                    epochs=epochs, validation_data=(x_test, y_test))
 
 # evaluate the model on test data
 score, accuracy = model.evaluate(x_test, y_test, batch_size=batch_size)
